@@ -1,0 +1,12 @@
+""" 
+I want to make a program for the game Diablo 3 that will take player 
+input about their weapons, armor, etc. and turn that information into 
+useful statistics about their damage, DPS, crits, multipliers, maybe even
+toughness eventually to improve on the way the in game sheet dps works
+but even go a step further than existing excel sheets by having a side-by-
+side comparison table where you can change one or more pieces of equipment
+or skills for a macro level understanding of the impact that change has on
+the build.
+Future improvements include charts on cumulative damage when hitting more
+than 1 mob, 
+"""

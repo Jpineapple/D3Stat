@@ -1,0 +1,18 @@
+# Section titles are in brackets
+# Section formats are described under Section title
+# End sections with ";"
+# '#' must be included on all non coding lines
+# 
+[Label Entries]
+#[Label, column, row]
+Dex, 0, 0
+Crit Chance, 1, 0
+Crit Damage, 1, 1
+Ele Dmg: Fire, 2, 0
+Ele Dmg: Cold, 2, 1
+Ele Dmg: Lightning, 2, 2
+Ele Dmg: Arcane, 2, 3
+Ele Dmg: Holy, 2, 4
+Ele Dmg: Poison, 2, 5
+Eite Dmg, 3, 0 
+;
