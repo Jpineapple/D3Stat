@@ -24,11 +24,7 @@ class LabelEntry(Tkinter.Tk):
         self.entry.pack(side="top", fill="both", expand=1)
         
         self.entry.bind("<Button-1>", lambda event, v=self.entryvar: self.onclick(event, v))
-<<<<<<< HEAD
-        
-=======
 
->>>>>>> Data-Entry-conf-file
     def onclick(self, event, var):
         self.entryvar.set("")
         

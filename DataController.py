@@ -16,5 +16,3 @@ class DataController(object):
         return self.labelentry_data
 
 test = DataController()
-
-print test.gui_data()
