@@ -11,10 +11,12 @@ class Win(Tkinter.Tk):
         
     def initialize(self):
         self.damage_frame = Tkinter.Frame(self)
-        self.damage_frame.pack(side="left", fill="both", expand=1)
+        self.damage_frame.pack(side="left", fill="both", expand=1, padx=10)
         
-        self.dmgmin = LabelEntry(self.damage_frame, "Min", 0, 0, width=10)
-        self.dmgmax = LabelEntry(self.damage_frame, "Max", 1, 0, width=10)
+        self.dmglabel = Tkinter.Label(self.damage_frame, text="Damage Range")
+        self.dmglabel.grid(column=0, row=0, columnspan=2)
+        self.dmgmin = LabelEntry(self.damage_frame, "Min", 0, 1, width=10)
+        self.dmgmax = LabelEntry(self.damage_frame, "Max", 1, 1, width=10)
         
         self.stats_frame = Tkinter.Frame(self)
         self.stats_frame.pack(side="left", fill="both", expand=1)
