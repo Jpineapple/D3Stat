@@ -1,0 +1,5 @@
+'Elite Dmg': 0.0
+'Attribute': 9736.0
+'Crit Chance': 60.3
+'Crit Damage': 505.0
+'Ele Dmg Fire': 39.0

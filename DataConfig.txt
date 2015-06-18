@@ -5,14 +5,15 @@
 # 
 [Label Entries]
 #[Label, column, row]
-Dex, 0, 0
+Attribute, 0, 0
 Crit Chance, 1, 0
 Crit Damage, 1, 1
-Ele Dmg: Fire, 2, 0
-Ele Dmg: Cold, 2, 1
-Ele Dmg: Lightning, 2, 2
-Ele Dmg: Arcane, 2, 3
-Ele Dmg: Holy, 2, 4
-Ele Dmg: Poison, 2, 5
-Eite Dmg, 3, 0 
+Ele Dmg Fire, 2, 0
+Ele Dmg Cold, 2, 1
+Ele Dmg Ltng, 2, 2
+Ele Dmg Phys, 2, 3
+Ele Dmg Arcn, 2, 4
+Ele Dmg Holy, 2, 5
+Ele Dmg Pois, 2, 6
+Elite Dmg, 3, 0 
 ;

@@ -1,4 +1,5 @@
 import Tkinter
+from tkFileDialog import askopenfilename
 from compound_widgets import *
 from DataController import *
 
@@ -9,6 +10,12 @@ class Win(Tkinter.Tk):
         self.initialize()
         
     def initialize(self):
+        self.damage_frame = Tkinter.Frame(self)
+        self.damage_frame.pack(side="left", fill="both", expand=1)
+        
+        self.dmgmin = LabelEntry(self.damage_frame, "Min", 0, 0, width=10)
+        self.dmgmax = LabelEntry(self.damage_frame, "Max", 1, 0, width=10)
+        
         self.stats_frame = Tkinter.Frame(self)
         self.stats_frame.pack(side="left", fill="both", expand=1)
             
@@ -17,9 +24,9 @@ class Win(Tkinter.Tk):
         self.entry_store = []
         for i, k in enumerate(labent_data):
             label, col, row = k
-            temp = LabelEntry(self.stats_frame, label, col, row)
+            temp = LabelEntry(self.stats_frame, label, col, row, width=len(label))
             self.entry_store.append(temp)
-
+                    
         self.res = Tkinter.Frame(self)
         self.res.pack(side="left", fill="y", expand=1)
         
@@ -27,16 +34,46 @@ class Win(Tkinter.Tk):
                                      command=self.callback)
         self.button.pack(side="bottom")
         
-    def callback(self):
-        self.entrylist = {}
+        self.menubar = Tkinter.Menu(self)
+        self.menubar.add_command(label="Open", command=self.get_file)
+        self.menubar.add_command(label="Save", command=self.save_file)
+        
+        self.config(menu=self.menubar)
+    
+    def update_state(self):
+        self.entry_state = {}
         for i, k in enumerate(self.entry_store):
             try:
-                int(k.entryvar.get())
-                self.entrylist[k.label.text] = k.entryvar.get()
+                self.entry_state[k.label.text] = float(k.entryvar.get())
             except:
                 print "ERROR: Value for " + k.label.text + " not set."
-        print self.entrylist
+    
+    def get_file(self):
+        self.filename = askopenfilename()
+        recons = {}
+        with open(self.filename) as infile:
+            for line in infile.readlines():
+                k , v = line.split(":")
+                recons[k.strip("''")] = v.strip()
+        print recons
         
+        for i, k in enumerate(self.entry_store):
+            try:
+                k.entryvar.set(float(recons[k.label.text]))
+            except:
+                continue
+                
+    def save_file(self):
+        self.update_state()
+        self.sav = str(self.entry_state)[1:-1]
+        with open("D3Save.txt", "w+") as f:
+            for line in self.sav.split(", "):
+                f.write(line + "\n")
+     
+    def callback(self):
+        self.update_state()
+        print str(self.entry_state)
+    
 if __name__ == "__main__":
     app = Win(None)
     app.title("Diablo?!?")
