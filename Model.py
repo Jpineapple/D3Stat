@@ -61,7 +61,7 @@ entrydict = {'Attribute': 9376.0, 'Elite Dmg': 15.0, 'Crit Damage': 505.0,
              'Restraint': True, 'Cull': True, 'Gem 1': 25.2, 'Gem 2': 28.5,
              'Gem 3': 0.0, 'Additive': 20.0, 'UH': 78.0}
 
-             test = Model()
+test = Model()
 yolo = test.get_mult(entrydict)
 print yolo
 holo = test.damage([1834.0,2911], 360.0, "Fire", yolo)
