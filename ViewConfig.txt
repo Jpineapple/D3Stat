@@ -1,0 +1,28 @@
+# Section titles are in brackets
+# Section formats are described under Section title
+# End sections with ";"
+# '#' must be included on all non coding lines
+# 
+[Statistics]
+#[Label, column, row]
+Attribute, 0, 0
+Crit Chance, 1, 0
+Crit Damage, 1, 1
+Ele Dmg Fire, 2, 0
+Ele Dmg Cold, 2, 1
+Ele Dmg Ltng, 2, 2
+Ele Dmg Phys, 2, 3
+Ele Dmg Arcn, 2, 4
+Ele Dmg Holy, 2, 5
+Ele Dmg Pois, 2, 6
+;
+[Damage]
+Min, 1, 0
+Max, 2, 0
++% Dmg, 3, 0
+Skill  %, 0, 0
+Skill +%, 0, 1
+Elite Dmg, 4, 0 
+;
+[Checkbutton]
+F&R, 0, 0

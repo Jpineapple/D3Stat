@@ -1,44 +1,72 @@
 import Tkinter
-from compound_widgets import *
-from DataController import *
+from tkFileDialog import askopenfilename
+from Controller import *
+from Input_Frames import *
 
-class Win(Tkinter.Tk):
+class Win(Tkinter.Tk, object):
     def __init__(self,parent):
         Tkinter.Tk.__init__(self,parent)
-        self.parent = parent
-        self.initialize()
+        self.control = Controller()
+        self.initialize_frames()
+        self.menu_setup()
         
-    def initialize(self):
-        self.stats_frame = Tkinter.Frame(self)
-        self.stats_frame.pack(side="left", fill="both", expand=1)
+    def initialize_frames(self):       
+        #Import the configuration for the damage frame and generate it
+        damage_configdata = self.control.get_config("Damage")
+        self.damage_frame = DamageFrame(self, damage_configdata)
+        self.damage_frame.grid(column=0, row=0, padx=5, pady=5)
+        
+        #Import the configuration for the statistics frame and generate it
+        statistics_configdata = self.control.get_config("Statistics")
+        self.statistics_frame = StatsFrame(self, statistics_configdata)
+        self.statistics_frame.grid(column=0, row=1, sticky="nw", padx=5, pady=5)
+        
+        #Import the configuration for 
+        checkbutton_configdata = self.control.get_config("Checkbutton")
+        self.checkbutton_frame = CheckbuttonFrame(self, checkbutton_configdata)
+        self.checkbutton_frame.grid(column=1, row=0, rowspan=2, sticky="n", padx=5, pady=5)
+        
+        test = self.winfo_children()
+        self.frame_store = {}
+        for child in test:
+            self.frame_store[child.name] = child
             
-        DataControl = DataController()
-        labent_data = DataControl.gui_data()
-        self.entry_store = []
-        for i, k in enumerate(labent_data):
-            label, col, row = k
-            temp = LabelEntry(self.stats_frame, label, col, row)
-            self.entry_store.append(temp)
+    def menu_setup(self):
+        self.menubar = Tkinter.Menu(self)
+        self.menubar.add_command(label="Open", command=self.get_file)
+        self.menubar.add_command(label="Save", command=self.save_file)
+        
+        self.config(menu=self.menubar)
+        
+    def get_file(self):
+        self.filename = askopenfilename()
+        savdict = self.control.open_sav(self.filename)
+        for key in self.frame_store.keys(): 
+            input = savdict[key]
+            for entry in self.frame_store[key].winfo_children():
+                try:
+                    entry.entry.focus_set()
+                    entry.entryvar.set(input[entry.label.cget("text")])
+                except:
+                    continue
+        self.focus_set()
+        
+    def save_file(self):
+        self.focus_set()
+        open("D3Save.txt", "w").truncate()
+        for key in self.frame_store.keys():
+            name = key
+            frame = self.frame_store[key]
+            
+            update = frame.get_state()
+            sav = str(update)[1:-1]
+            with open("D3Save.txt", "a") as f:
+                f.write("[" + name + "]" + "\n")
+                for line in sav.split(", "):
+                    f.write(line + "\n")
+                f.write(";\n")
 
-        self.res = Tkinter.Frame(self)
-        self.res.pack(side="left", fill="y", expand=1)
-        
-        self.button = Tkinter.Button(self.res, text="calculate",
-                                     command=self.callback)
-        self.button.pack(side="bottom")
-        
-    def callback(self):
-        self.entrylist = {}
-        for i, k in enumerate(self.entry_store):
-            try:
-                int(k.entryvar.get())
-                self.entrylist[k.label.text] = k.entryvar.get()
-            except:
-                print "ERROR: Value for " + k.label.text + " not set."
-        print self.entrylist
-        
 if __name__ == "__main__":
     app = Win(None)
     app.title("Diablo?!?")
     app.mainloop()
-    

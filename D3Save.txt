@@ -1,0 +1,23 @@
+[Stats]
+'Crit Damage': None
+'Ele Dmg Holy': None
+'Ele Dmg Fire': 76.0
+'Attribute': None
+'Ele Dmg Cold': None
+'Elite Dmg': 6.0
+'Crit Chance': None
+'Ele Dmg Ltng': None
+'Ele Dmg Phys': None
+'Ele Dmg Arcn': None
+'Ele Dmg Pois': None
+;
+[Damage]
+'Skill +%': None
+'Max': None
+'Skill %': None
+'+% Dmg': None
+'Min': None
+;
+[Checkbutton]
+'F&R': 0
+;
