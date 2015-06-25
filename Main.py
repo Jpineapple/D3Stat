@@ -1,83 +1,72 @@
 import Tkinter
 from tkFileDialog import askopenfilename
-from compound_widgets import *
-from DataController import *
+from Controller import *
+from Input_Frames import *
 
-class Win(Tkinter.Tk):
+class Win(Tkinter.Tk, object):
     def __init__(self,parent):
         Tkinter.Tk.__init__(self,parent)
-        self.parent = parent
-        self.initialize()
+        self.control = Controller()
+        self.initialize_frames()
+        self.menu_setup()
         
-    def initialize(self):
-        self.damage_frame = Tkinter.Frame(self)
-        self.damage_frame.pack(side="left", fill="both", expand=1, padx=10)
+    def initialize_frames(self):       
+        #Import the configuration for the damage frame and generate it
+        damage_configdata = self.control.get_config("Damage")
+        self.damage_frame = DamageFrame(self, damage_configdata)
+        self.damage_frame.grid(column=0, row=0, padx=5, pady=5)
         
-        self.dmglabel = Tkinter.Label(self.damage_frame, text="Damage Range")
-        self.dmglabel.grid(column=0, row=0, columnspan=2)
-        self.dmgmin = LabelEntry(self.damage_frame, "Min", 0, 1, width=10)
-        self.dmgmax = LabelEntry(self.damage_frame, "Max", 1, 1, width=10)
+        #Import the configuration for the statistics frame and generate it
+        statistics_configdata = self.control.get_config("Statistics")
+        self.statistics_frame = StatsFrame(self, statistics_configdata)
+        self.statistics_frame.grid(column=0, row=1, sticky="nw", padx=5, pady=5)
         
-        self.stats_frame = Tkinter.Frame(self)
-        self.stats_frame.pack(side="left", fill="both", expand=1)
+        #Import the configuration for 
+        checkbutton_configdata = self.control.get_config("Checkbutton")
+        self.checkbutton_frame = CheckbuttonFrame(self, checkbutton_configdata)
+        self.checkbutton_frame.grid(column=1, row=0, rowspan=2, sticky="n", padx=5, pady=5)
+        
+        test = self.winfo_children()
+        self.frame_store = {}
+        for child in test:
+            self.frame_store[child.name] = child
             
-        DataControl = DataController()
-        labent_data = DataControl.gui_data()
-        self.entry_store = []
-        for i, k in enumerate(labent_data):
-            label, col, row = k
-            temp = LabelEntry(self.stats_frame, label, col, row, width=len(label))
-            self.entry_store.append(temp)
-                    
-        self.res = Tkinter.Frame(self)
-        self.res.pack(side="left", fill="y", expand=1)
-        
-        self.button = Tkinter.Button(self.res, text="calculate",
-                                     command=self.callback)
-        self.button.pack(side="bottom")
-        
+    def menu_setup(self):
         self.menubar = Tkinter.Menu(self)
         self.menubar.add_command(label="Open", command=self.get_file)
         self.menubar.add_command(label="Save", command=self.save_file)
         
         self.config(menu=self.menubar)
-    
-    def update_state(self):
-        self.entry_state = {}
-        for i, k in enumerate(self.entry_store):
-            try:
-                self.entry_state[k.label.text] = float(k.entryvar.get())
-            except:
-                print "ERROR: Value for " + k.label.text + " not set."
-    
+        
     def get_file(self):
         self.filename = askopenfilename()
-        recons = {}
-        with open(self.filename) as infile:
-            for line in infile.readlines():
-                k , v = line.split(":")
-                recons[k.strip("''")] = v.strip()
-        print recons
+        savdict = self.control.open_sav(self.filename)
+        for key in self.frame_store.keys(): 
+            input = savdict[key]
+            for entry in self.frame_store[key].winfo_children():
+                try:
+                    entry.entry.focus_set()
+                    entry.entryvar.set(input[entry.label.cget("text")])
+                except:
+                    continue
+        self.focus_set()
         
-        for i, k in enumerate(self.entry_store):
-            try:
-                k.entryvar.set(float(recons[k.label.text]))
-            except:
-                continue
-                
     def save_file(self):
-        self.update_state()
-        self.sav = str(self.entry_state)[1:-1]
-        with open("D3Save.txt", "w+") as f:
-            for line in self.sav.split(", "):
-                f.write(line + "\n")
-     
-    def callback(self):
-        self.update_state()
-        print str(self.entry_state)
-    
+        self.focus_set()
+        open("D3Save.txt", "w").truncate()
+        for key in self.frame_store.keys():
+            name = key
+            frame = self.frame_store[key]
+            
+            update = frame.get_state()
+            sav = str(update)[1:-1]
+            with open("D3Save.txt", "a") as f:
+                f.write("[" + name + "]" + "\n")
+                for line in sav.split(", "):
+                    f.write(line + "\n")
+                f.write(";\n")
+
 if __name__ == "__main__":
     app = Win(None)
     app.title("Diablo?!?")
     app.mainloop()
-    

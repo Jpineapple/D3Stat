@@ -2,31 +2,24 @@
 import Tkinter
 
 
-class LabelEntry(Tkinter.Tk):    
+class LabelEntry(Tkinter.Frame):    
     def __init__(self, parent, label, column=0, row=0, entrydef="Set", width=20):
-        self.parent = parent
+        self.name = label
         self.entrydef = entrydef
-        self.container(parent, column, row)
-        self.gen_label(parent, label)
-        self.gen_entry(parent, entrydef, width)
         
-    def container(self, parent, column, row):
-        self.container = Tkinter.Frame(parent)
-        self.container.grid(column=column, row=row)
+        Tkinter.Frame.__init__(self, parent)
+        self.grid(column=column, row=row)
         
-    def gen_label(self, parent, label):
-        self.label = Tkinter.Label(self.container, text=label)
-        self.label.text = label
+        self.label = Tkinter.Label(self, text=label)
         self.label.pack(side="top", fill="both", expand=1)
         
-    def gen_entry(self, parent, entrydef, width=20):
         self.entryvar = Tkinter.StringVar(value=entrydef)
-        self.entry = Tkinter.Entry(self.container, bg="yellow", width=width, textvariable=self.entryvar)
-        self.entry.pack(side="left", fill="both", expand=1)
+        self.entry = Tkinter.Entry(self, bg="yellow", width=width, textvariable=self.entryvar)
+        self.entry.pack(side="top", fill="both", expand=1)
         
         self.entry.bind("<Button-1>", self.onclick)
         self.entry.bind("<FocusOut>", self.onleave)
-
+    
     def onclick(self, event):
         try:
             float(event.widget.get())
@@ -34,14 +27,32 @@ class LabelEntry(Tkinter.Tk):
             self.entryvar.set("")
         
     def onleave(self, event):
-        if self.entry.get() is "":
+        try:
+            float(event.widget.get())
+            event.widget["bg"] = "white"
+        except:
             self.entryvar.set(self.entrydef)
+            event.widget["bg"] = "yellow"            
+        
+    def state(self):
+        if self.entryvar.get() == self.entrydef:
+            return None
+        try:
+            return float(self.entryvar.get())
+        except:
+            print "Error: Invalid Input"
+            
 
             
-class DamageEntry(LabelEntry):
-    def __init__(self, parent, column, row, label, number):
-        self.parent = parent
-        self.container(parent, column, row)
-        self.gen_label(parent, label)
-        for i in (0,number):
-            self.gen_entry(parent, "self")
+class LabelCheckbutton(Tkinter.Frame):
+    def __init__(self, parent, label, column, row, width=20):
+        self.name = label
+        Tkinter.Frame.__init__(self, parent)
+        self.grid(column=column, row=row)
+        
+        self.buttonvar = Tkinter.IntVar()
+        self.button = Tkinter.Checkbutton(self, text=label, width=width, variable=self.buttonvar)
+        self.button.pack()
+        
+    def state(self):
+        return self.buttonvar.get()

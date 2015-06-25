@@ -1,11 +1,23 @@
-'Crit Damage': 124.0
-'Ele Dmg Holy': 26.0
-'Ele Dmg Fire': 13.0
-'Attribute': 14.0
-'Ele Dmg Cold': 3.0
-'Elite Dmg': 12.0
-'Crit Chance': 34.0
-'Ele Dmg Ltng': 54.0
-'Ele Dmg Phys': 3456.0
-'Ele Dmg Arcn': 26.0
-'Ele Dmg Pois': 342.0
+[Stats]
+'Crit Damage': None
+'Ele Dmg Holy': None
+'Ele Dmg Fire': 76.0
+'Attribute': None
+'Ele Dmg Cold': None
+'Elite Dmg': 6.0
+'Crit Chance': None
+'Ele Dmg Ltng': None
+'Ele Dmg Phys': None
+'Ele Dmg Arcn': None
+'Ele Dmg Pois': None
+;
+[Damage]
+'Skill +%': None
+'Max': None
+'Skill %': None
+'+% Dmg': None
+'Min': None
+;
+[Checkbutton]
+'F&R': 0
+;
